@@ -29,4 +29,5 @@ jobs:
           ref: feature-1
       - name: push artifact
         run: |
+           git commit -am "test"
            git push 'https://${{secrets.BAHMNI_USERNAME}}:${{secrets.BAHMNI_PAT}}@github.com/${{secrets.BAHMNI_USERNAME}}/testing.git' feature-1

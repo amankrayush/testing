@@ -1,0 +1,32 @@
+name: Build and Deploy
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js 16.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: "16.x"
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: dist/
+  
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          ref: feature-1
+      - name: push artifact
+        run: |
+           git push 'https://${{secrets.BAHMNI_USERNAME}}:${{secrets.BAHMNI_PAT}}@github.com/${{secrets.BAHMNI_USERNAME}}/testing.git' feature-1
